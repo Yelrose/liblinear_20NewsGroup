@@ -1,5 +1,6 @@
 from gensim.corpora import dictionary
 from gensim.models import tfidfmodel
+import math
 
 
 def sparse(vec):

@@ -49,8 +49,15 @@ if __name__ == '__main__':
     data['test'] = get_news('./20news-bydate-test',stopwords)
     data['train'] = get_news('./20news-bydate-train',stopwords)
     methods = open('method/method.list').readlines()
+    fp = open('./tmp/run.sh','w')
+    fp.write('echo \"start\" > res.txt\n')
     for method in methods:
         method = method.strip()
         moo = __import__(method)
         print 'making vectors by method ',method
         moo.vectorize(data,'tmp/'+method+'_train','tmp/'+method+'_test')
+        fp.write('echo \"%s\" >> res.txt\n' % method)
+        fp.write("../liblinear-2.1/train -s 2 %s_train\n" % method)
+        fp.write("../liblinear-2.1/predict %s_test %s_train.model log.txt >> res.txt\n" % (method,method))
+    fp.close()
+
