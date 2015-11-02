@@ -10,6 +10,8 @@ bash doall.sh
 
 # Method
 put your method python file in method/
-The demo is like method/bag_of_word.py.
+
+The demo is like method/bag_of_word.py
+
 Write the python file name to method.list
 
