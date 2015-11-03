@@ -1,5 +1,7 @@
 import os
 import sys
+import logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 sys.path.append('method')
 def load_news_from_path(path,stopwords):
     lines = open(path).readlines()
