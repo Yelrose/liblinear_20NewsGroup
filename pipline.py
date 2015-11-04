@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import re
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 sys.path.append('method')
 def load_news_from_path(path,stopwords):
@@ -10,8 +11,11 @@ def load_news_from_path(path,stopwords):
     for line in lines:
         line = line.strip()
         if start_content is False:
-            if line[0:6] == 'Lines:': start_content = True
-            continue
+            m = re.match(r'[a-zA-Z]+:',line)
+            if m:
+                continue
+            else:
+                start_content = True
         for wd in line.split(' '):
             if len(wd) == 0: continue
             wd = wd.lower()
