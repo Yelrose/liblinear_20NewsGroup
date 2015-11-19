@@ -60,12 +60,41 @@ def get_news(path):
 
 
 
+def get_news_from_cache(path):
+    fp = open(path)
+    data = []
+    while True:
+        line = fp.readline()
+        if not line: break
+        line = line.strip().split('\x01')
+        label =line[0]
+        text = line[1:]
+        data.append((label,text))
+    return data
+
+
+def dump_news_to_cache(data,path):
+    fp = open(path,'w')
+    for label,text in data:
+        fp.write("%s\x01"%label)
+        fp.write("\x01".join(text))
+        fp.write("\n")
+    fp.close()
+
 
 
 if __name__ == '__main__':
     data = {}
-    data['test'] = get_news('./20news-bydate-test')
-    data['train'] = get_news('./20news-bydate-train')
+    if os.path.exists('./tmp/test_cache'):
+        data['test'] = get_news_from_cache('./tmp/test_cache')
+    else :
+        data['test'] = get_news('./20news-bydate-test')
+        dump_news_to_cache(data['test'],'./tmp/test_cache')
+    if os.path.exists('./tmp/train_cache'):
+        data['train'] = get_news_from_cache('./tmp/train_cache')
+    else :
+        data['train'] = get_news('./20news-bydate-train')
+        dump_news_to_cache(data['train'],'./tmp/train_cache')
     methods = open('method/method.list').readlines()
     fp = open('./tmp/run.sh','w')
     fp.write('echo \"start\" > res.txt\n')
