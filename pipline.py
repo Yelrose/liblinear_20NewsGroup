@@ -42,7 +42,6 @@ def load_news_from_path(path):
         content.append("<\s>")
     return content
 
-
 def get_news(path):
     data = []
     for root,dirs,files in os.walk(path):
@@ -106,5 +105,6 @@ if __name__ == '__main__':
         fp.write('echo \"%s\" >> res.txt\n' % method)
         fp.write("../liblinear-2.1/train -s 2 %s_train\n" % method)
         fp.write("../liblinear-2.1/predict %s_test %s_train.model log.txt >> res.txt\n" % (method,method))
+        fp.write("python ../eval.py %s_test log.txt >> res.txt\n" % method)
     fp.close()
 
